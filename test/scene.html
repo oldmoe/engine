@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="prototype.js" type="text/javascript"></script>
+        <script src="data.js" type="text/javascript"></script>
+        <script src="../src/publisher.js" type="text/javascript"></script>
+        <script src="../src/reactor.js" type="text/javascript"></script>
+        <script src="../src/scene.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <script>
+            var game = {}, scene = null;
+            document.observe('dom:loaded',function(){
+                try {
+                    scene = new Scene(1500, game).start().attach({update : function(){console.log('attached')}}, ['update']);
+                    scene.subscribe('update', {oops: function(){console.log('oops')}}, 'oops')
+
+                } catch(e){
+                    console.log("error");
+                    console.log(e);
+                }
+            })
+        </script>
+    </body>
+</html>
