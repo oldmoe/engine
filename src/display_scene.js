@@ -2,11 +2,11 @@ NE.DisplayScene = Class.create({
 
     initialize : function() {
         this.renderLoops = {};
-        this.createRenderLoop('main', 1).start();
     },
 
     onattach : function(scene) {
         this.scene = scene;
+        this.createRenderLoop('main', 1).start();
     },
 
     createRenderLoop : function(name, delay) {

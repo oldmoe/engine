@@ -19,7 +19,7 @@ NE.Scene = Class.create(NE.Reactor, {
     },
 	
     /* calls *update* on all subscribed objects */
-    update : function(){
+    update : function() {
     }
 	
 });

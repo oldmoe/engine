@@ -6,6 +6,10 @@ var DefenderScene = Class.create(NE.Scene, {
 
     init : function() {
         this.map = new Map(mapTestData);
+    },
+
+    sendCreep : function() {
+        return new Creep(this);
     }
 
 });
