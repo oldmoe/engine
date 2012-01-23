@@ -1,37 +1,40 @@
 NE.DomSprite = Class.create(NE.BasicSprite, {
 
-    initialize : function($super, images, properties){
+    initialize : function($super, layer, owner, images, properties){
         this.attachMethods(['moveTo', 'moveBy', 'rotateTo', 'rotateBy', 'show', 'hide', 'destroy']);
-        $super(images, properties);
+        $super(layer, owner, images, properties);
         this.div = $(document.createElement('DIV'))
-        this.container.appendChild(this.div)
+        if(this.className)
+            this.div.addClassName(this.className);
+        this.layer.div.appendChild(this.div)
+        this.owner.attach(owner, this.attachedMethods)
     },
 
-    moveTo : function(){
-        this.div.setStyle({top : this.owner.y + this.shiftY, left: this.owner.x + this.shiftX})
+    moveTo : function(owner){
+        this.div.setStyle({top : owner.y + this.shiftY, left: owner.x + this.shiftX})
     },
 
-    moveBy : function(){
-        this.moveTo()
+    moveBy : function(owner){
+        this.moveTo(owner)
     },
 
-    rotateTo : function(){
-
-    },
-
-    rotateBy : function(){
+    rotateTo : function(owner){
 
     },
 
-    show : function(){
+    rotateBy : function(owner){
+
+    },
+
+    show : function(owner){
         this.div.show();
     },
 
-    hide : function(){
+    hide : function(owner){
         this.div.hide();
     },
 
-    destroy : function(){
+    destroy : function(owner){
 
     }
 

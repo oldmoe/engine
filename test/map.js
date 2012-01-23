@@ -18,7 +18,7 @@ var Map = Class.create({
         this.buildGridYCorrectionsTable();
         // init canvas and set proper listeners
         this.values = data.values;
-        this.entry = data.entry;
+        this.entries = data.entry;
         this.height = data.values.length;
         this.width = data.values[0].length;
         this.layers = data.values[0][0].length;
@@ -71,12 +71,20 @@ var Map = Class.create({
         y = ((gridY/2)-0.5) * this.tileH;
         // top => top-left corner
         // bottom => bottom-right corner
-        return {
+        // NW, NE, SE and SW are centerpoints on tile borders
+        var qrtW = this.tileW / 4;
+        var qrtH = Math.ceil(this.tileH / 4);
+        var bounds = {
             topX: x,
             topY: y,
             bottomX: x + this.tileW,
-            bottomY: y + this.tileH,
+            bottomY: y + this.tileH
         };
+        bounds.NW = {x: x + qrtW, y: y + qrtH};
+        bounds.NE = {x: this.bottomX - qrtW, y: y + qrtH};
+        bounds.SE = {x: this.bottomX - qrtW, y: this.bottomY - qrtH};
+        bounds.SW = {x: x + qrtW, y: this.bottomY - qrtH};
+        return bounds;
     },
 
     getGridYCorrection : function(x, y) {

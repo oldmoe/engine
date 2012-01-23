@@ -2,6 +2,7 @@ var NE = {}
 NE.Publisher = {
 	
     subscribe : function(event, subscriber, method){
+        if(!method) method = event
         if(!this.subscriptions)this.subscriptions = {}
         if(!this.subscriptions[event])this.subscriptions[event] = []
         this.subscriptions[event].push([subscriber, method])

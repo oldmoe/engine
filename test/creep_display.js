@@ -1,9 +1,10 @@
 var CreepDisplay = Class.create({
 
-    initialize : function(owner) {
+    initialize : function(owner, layers) {
         this.owner = owner;
-        var sprite = new Sprite([]);
-        this.owner.attach(sprite, sprite.attachMethods);
+        var im = new Image();
+        im.src = 'bldg3.png';
+        this.layers['ground'].createSprite('', owner, [im], {});
     }
 
 

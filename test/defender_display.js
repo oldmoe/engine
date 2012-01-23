@@ -3,6 +3,8 @@ var DefenderDisplay = Class.create(NE.DisplayScene, {
     initialize : function($super) {
         $super();
         console.log("display setup!");
+        this.layers = {};
+        this.layers['ground'] = new CanvasDisplayLayer('body', {id: 'map'});
     },
 
     update : function() {
@@ -10,7 +12,7 @@ var DefenderDisplay = Class.create(NE.DisplayScene, {
     },
 
     sendCreep : function(scene, creep){
-        new CreepDisplay(creep)
-    },
+        new CreepDisplay(creep, this.layers);
+    }
 
 });
