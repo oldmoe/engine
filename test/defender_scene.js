@@ -4,12 +4,20 @@ var DefenderScene = Class.create(NE.Scene, {
         $super(delay, game);
     },
 
-    init : function() {
-        this.map = new Map(mapTestData);
+    start : function($super) {
+        $super();
+        this.setupMap();
+        this.sendCreep();
+    },
+    
+    sendCreep : function() {
+        this.addObject(new Creep(this));
     },
 
-    sendCreep : function() {
-        return new Creep(this);
+    setupMap : function() {
+        this.map = new Map(mapTestData);
+        return this.map;
     }
+
 
 });

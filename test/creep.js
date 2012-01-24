@@ -1,5 +1,6 @@
 var Creep = Class.create(NE.Publisher, {
 
+    klassName: 'Creep',
     parent : "creep",
     cannonTheta : 0,
     olderTheta : 0,
@@ -21,13 +22,12 @@ var Creep = Class.create(NE.Publisher, {
     },
     transitionAngles: {
         30: {1: 0, 2: 90},
-        150: {1: 60, 2: 180}, 
+        150: {1: 90, 2: 180},
         210: {1: 270, 2: 0},
         330: {1: 180, 2: 270}},
     chosenDir : null,
 
     initialize : function(scene){
-        scene.subscribe('update', this, 'update')
         this.map = scene.map;
         this.entry = this.map.entries.random();
         this.gridX = this.entry.x;
@@ -35,17 +35,17 @@ var Creep = Class.create(NE.Publisher, {
         this.rotation = this.entry.theta;
         var bounds = this.map.locateTileBounds(this.entry.x, this.entry.y);
         if (this.rotation == 30) {
-            this.x = bounds.NW.x;
-            this.y = bounds.NW.y;
-        } else if (this.rotation == 150) {
-            this.x = bounds.NE.x;
-            this.y = bounds.NE.y;
-        } else if (this.rotation == 210) {
             this.x = bounds.SE.x;
             this.y = bounds.SE.y;
-        } else if (this.rotation == 330) {
+        } else if (this.rotation == 150) {
             this.x = bounds.SW.x;
             this.y = bounds.SW.y;
+        } else if (this.rotation == 210) {
+            this.x = bounds.NW.x;
+            this.y = bounds.NW.y;
+        } else if (this.rotation == 330) {
+            this.x = bounds.NE.x;
+            this.y = bounds.NE.y;
         }
     },
 
@@ -55,7 +55,7 @@ var Creep = Class.create(NE.Publisher, {
 	*/
     validNeighbors : function() {
         var currentValue = this.map.tileValue(this.gridX, this.gridX, this.entry.z);
-        var neighbors = (this.gridY % 2 == 0) ? (Map.neighborsEven) : (Map.neighborsOdd);
+        var neighbors = (this.gridY % 2 == 0) ? (this.map.neighborsEven) : (this.map.neighborsOdd);
         var ret = [], forward = null, left = null, right = null;
         if (this.rotation == 30) {
             forward = neighbors.SE.clone();
@@ -76,9 +76,9 @@ var Creep = Class.create(NE.Publisher, {
         }
         // if a neighbor/adjacent tile has the same value as my current tile
         // (i.e. not necessarily '1') then it's safe to move in that tile's direction
-        if (Map.value(this.gridX + forward[0], this.gridY + forward[1], this.entry.z) == currentValue) ret.push(this.moves.FORWARD);
-        if (Map.value(this.gridX + left[0], this.gridY + left[1], this.entry.z) == currentValue) ret.push(this.moves.LEFT);
-        if (Map.value(this.gridX + right[0], this.gridY + right[1], this.entry.z) == currentValue) ret.push(this.moves.RIGHT);
+        if (forward != null && this.map.tileValue(this.gridX + forward[0], this.gridY + forward[1], this.entry.z) == currentValue) ret.push(this.moves.FORWARD);
+        if (left != null && this.map.tileValue(this.gridX + left[0], this.gridY + left[1], this.entry.z) == currentValue) ret.push(this.moves.LEFT);
+        if (right != null && this.map.tileValue(this.gridX + right[0], this.gridY + right[1], this.entry.z) == currentValue) ret.push(this.moves.RIGHT);
         return ret;
     },
 
@@ -107,44 +107,51 @@ var Creep = Class.create(NE.Publisher, {
                 // start rotating
                 this.rotating = true;
                 this.rotation = this.transitionAngles[this.rotation][this.chosenDir];
-
             }
         } else {
-            // actual rotation movement
+            if (this.rotation == 0) {
+                this.x += this.speed;
+            } else if (this.rotation == 90) {
+                this.y += this.speed;
+            } else if (this.rotation == 180) {
+                this.x -= this.speed;
+            } else if (this.rotation == 270) {
+                this.y -= this.speed;
+            }
         }
         if (move) {
             if (this.rotation == 30) {
-                this.x += Map.cos30 * this.speed;
-                this.y -= Map.sin30 * this.speed;
+                this.x += this.map.cos30 * this.speed;
+                this.y += this.map.sin30 * this.speed;
             } else if (this.rotation == 150) {
-                this.x -= Map.cos30 * this.speed;
-                this.y -= Map.sin30 * this.speed;
+                this.x -= this.map.cos30 * this.speed;
+                this.y += this.map.sin30 * this.speed;
             } else if (this.rotation == 210) {
-                this.x -= Map.cos30 * this.speed;
-                this.y += Map.sin30 * this.speed;
+                this.x += this.map.cos30 * this.speed;
+                this.y -= this.map.sin30 * this.speed;
             } else if (this.rotation == 330) {
-                this.x += Map.cos30 * this.speed;
-                this.y += Map.sin30 * this.speed;
+                this.x -= this.map.cos30 * this.speed;
+                this.y -= this.map.sin30 * this.speed;
             }
         }
         var newTile = this.map.findTile(this.x, this.y);
-        if (newTile[0] >= Map.width || newTile[1] >= Map.height || newTile[0] < 0 || newTile[1] < 0 ) {
+        if (newTile[0] >= this.map.width || newTile[1] >= this.map.height || newTile[0] < 0 || newTile[1] < 0 ) {
             this.scene.escaped += 1
             this.destroy()
         } else if (this.gridX != newTile[0] || this.gridY != newTile[1]) {
-            var oldArr = Map.grid[this.gridY][this.gridX][this.entry.z];
+            var oldArr = this.map.grid[this.gridY][this.gridX][this.entry.z];
             oldArr.splice(oldArr.indexOf(this), 1);
             this.gridX = newTile[0];
             this.gridY = newTile[1];
             // now we need to nullify chosenDir to make sure it's re-calculated in the next tile
-            this.chosenDir = null
-            if (newTile[0] < Map.width) {
-                Map.grid[newTile[1]][newTile[0]][this.entry.z].push(this);
+            this.chosenDir = null;
+            if (this.gridX < this.map.width && this.gridY < this.map.height) {
+                this.map.grid[newTile[1]][newTile[0]][this.entry.z].push(this);
             } else {
-        // we are going out, do nothing for now;
+                // we are going out, do nothing for now;
+            }
         }
-        }
-        this.target();	//for specifying the target to hit
+        //this.target();	//for specifying the target to hit
     },
     
     getTargetfromCell : function(cell, targets){

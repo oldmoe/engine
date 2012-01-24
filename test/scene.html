@@ -11,22 +11,28 @@
         <script src="../src/display_scene.js" type="text/javascript"></script>
         <script src="../src/render_loop.js" type="text/javascript"></script>
         <script src="../src/reactor.js" type="text/javascript"></script>
+        <script src="../src/display_layer.js" type="text/javascript"></script>
+        <script src="../src/canvas_display_layer.js" type="text/javascript"></script>
+        <script src="../src/basic_sprite.js" type="text/javascript"></script>
+        <script src="../src/dom_sprite.js" type="text/javascript"></script>
+        <script src="../src/canvas_sprite.js" type="text/javascript"></script>
+        <script src="../src/nezal.js" type="text/javascript"></script>
         <script src="defender_display.js" type="text/javascript"></script>
         <script src="defender_scene.js" type="text/javascript"></script>
         <script src="map.js" type="text/javascript"></script>
+        <script src="map_display.js" type="text/javascript"></script>
+        <script src="creep.js" type="text/javascript"></script>
+        <script src="creep_display.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="defender.css"/>
     </head>
     <body id="body">
-    <canvas id="map">
-    </canvas>
     <script>
         var game = {}, scene = null;
         document.observe('dom:loaded',function(){
             try {
-                scene = new DefenderScene(1500, game).start(); /*.attach({update : function(){console.log('attached')}}, ['update']);*/
-                var sceneDisplay = new DefenderDisplay();
-                scene.subscribe('update', sceneDisplay);
-                scene.attach(sceneDisplay, ['sendCreep'])
-                //scene.subscribe('update', {oops: function(){console.log('oops')}}, 'oops');
+                scene = new DefenderScene(50, game);
+                var sceneDisplay = new DefenderDisplay(scene);
+                scene.start();
             } catch(e){
                 console.log("error");
                 console.log(e);

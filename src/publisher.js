@@ -38,8 +38,8 @@ NE.Publisher = {
         for(var i=0; i<methods.length;i++){
             var method = methods[i]
             this.subscribe(method, object)
+            if(!this["__"+method+"__"]) this._wrap(method)
         }
-        if(!this["__"+method+"__"]) this._wrap(method)
         if(object.onattach) object.onattach(this);
         return this;
     },

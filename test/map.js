@@ -7,11 +7,29 @@ var Map = Class.create({
     height : 30,
     layers : 1,
     tan30 : 0.577350269,
-    cos30:  0.15425145,
-    sin30: -0.988031624,
+    cos30:  0.866025404,
+    sin30: 0.5,
     grid : [],
-    neighborsEven : {N: [-2,0], S: [2,0], E: [0,1], W: [0,-1], NE: [-1,0], NW: [-1,-1], SE: [1,0], SW: [1,-1]},
-    neighborsOdd : {N: [-2,0], S: [2,0], E: [0,1], W: [0,-1], NE: [-1,1], NW: [-1,0], SE: [1,1], SW: [1,0]},
+    neighborsEven : {
+        N: [-2,0],
+        S: [2,0],
+        E: [0,1],
+        W: [0,-1],
+        NE: [-1,0],
+        NW: [-1,-1],
+        SE: [1,0],
+        SW: [1,-1]
+    },
+    neighborsOdd : {
+        N: [-2,0],
+        S: [2,0],
+        E: [0,1],
+        W: [0,-1],
+        NE: [-1,1],
+        NW: [-1,0],
+        SE: [1,1],
+        SW: [1,0]
+    },
 
     initialize : function(data) {
         // build lookup table for gridY corrections
@@ -31,6 +49,8 @@ var Map = Class.create({
                 }
             }
         }
+        this.x = 0;
+        this.y = 0;
     },
 
     buildGridYCorrectionsTable : function() {
@@ -80,10 +100,22 @@ var Map = Class.create({
             bottomX: x + this.tileW,
             bottomY: y + this.tileH
         };
-        bounds.NW = {x: x + qrtW, y: y + qrtH};
-        bounds.NE = {x: this.bottomX - qrtW, y: y + qrtH};
-        bounds.SE = {x: this.bottomX - qrtW, y: this.bottomY - qrtH};
-        bounds.SW = {x: x + qrtW, y: this.bottomY - qrtH};
+        bounds.NW = {
+            x: x + qrtW,
+            y: y + qrtH
+        };
+        bounds.NE = {
+            x: bounds.bottomX - qrtW,
+            y: y + qrtH
+        };
+        bounds.SE = {
+            x: bounds.bottomX - qrtW,
+            y: bounds.bottomY - qrtH
+        };
+        bounds.SW = {
+            x: x + qrtW,
+            y: bounds.bottomY - qrtH
+        };
         return bounds;
     },
 
@@ -109,7 +141,9 @@ var Map = Class.create({
     },
 
     tileValue : function(gridX, gridY, z) {
-        return this.grid[gridY][gridX][z];
+        if (gridY < 0 || gridX < 0)
+            return -111;
+        return this.values[gridY][gridX][z];
     }
     
 });

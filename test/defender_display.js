@@ -1,18 +1,21 @@
 var DefenderDisplay = Class.create(NE.DisplayScene, {
 
-    initialize : function($super) {
-        $super();
-        console.log("display setup!");
-        this.layers = {};
-        this.layers['ground'] = new CanvasDisplayLayer('body', {id: 'map'});
+    initialize : function($super, scene) {
+        $super(scene);
+        var im = new Image();
+        im.src = 'map.png';
+        this.layers['map'] = new NE.CanvasDisplayLayer('body', 896, 449, {id: 'map'});
+        this.layers['creeps'] = new NE.CanvasDisplayLayer('body', 896, 449, {id: 'creepsArena'});
+        scene.attach(this, ['setupMap']);
     },
 
     update : function() {
-        console.log("scene display update");
+        this.layers['creeps'].render();
     },
 
-    sendCreep : function(scene, creep){
-        new CreepDisplay(creep, this.layers);
+    setupMap : function(scene, map) {
+        new MapDisplay(map, this.layers);
+        this.layers['map'].render();
     }
 
 });

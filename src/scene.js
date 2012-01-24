@@ -17,7 +17,11 @@ NE.Scene = Class.create(NE.Reactor, {
         this.fireEvery(1, this, 'update');
         return this;
     },
-	
+
+    addObject : function(object){
+        this.attach(object, ['update']);
+        return object;
+    },
     /* calls *update* on all subscribed objects */
     update : function() {
     }
