@@ -1,7 +1,7 @@
 var Map = Class.create({
 
     tileW : 64,
-    tileH : 31,
+    tileH : 37,
     // meaningless initial values
     width : 15,
     height : 30,
@@ -141,9 +141,11 @@ var Map = Class.create({
     },
 
     tileValue : function(gridX, gridY, z) {
-        if (gridY < 0 || gridX < 0)
-            return -111;
-        return this.values[gridY][gridX][z];
+        if (this.values[gridY] && this.values[gridY][gridX]) {
+            console.log('[' + gridX + ',' + gridY + '] : ' + this.values[gridY][gridX][z]);
+            return this.values[gridY][gridX][z];
+        }
+        return -111;
     }
     
 });

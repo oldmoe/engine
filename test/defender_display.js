@@ -4,8 +4,8 @@ var DefenderDisplay = Class.create(NE.DisplayScene, {
         $super(scene);
         var im = new Image();
         im.src = 'map.png';
-        this.layers['map'] = new NE.CanvasDisplayLayer('body', 896, 449, {id: 'map'});
-        this.layers['creeps'] = new NE.CanvasDisplayLayer('body', 896, 449, {id: 'creepsArena'});
+        this.layers['map'] = new NE.CanvasDisplayLayer('body', 896, 536, {id: 'map'});
+        this.layers['creeps'] = new NE.CanvasDisplayLayer('body', 896, 536, {id: 'creepsArena'});
         scene.attach(this, ['setupMap']);
     },
 
