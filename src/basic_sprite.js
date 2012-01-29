@@ -4,19 +4,17 @@ NE.BasicSprite = Class.create(NE.Publisher, {
     shiftY : 0,
     transitionX: 0,
     transitionY: 0,
+    frameWidth: 0,
+    frameHeight: 0,
     
-    initialize : function(layer, owner, images, properties){
-        this.images = images;
+    initialize : function(layer, owner, image, properties){
+        this.image = image;
         this.layer = layer;
         this.owner = owner;
         Object.extend(this, properties);
         this.currentAnimation = 0;
         this.currentFrame = 0;
         this.visible = true;
-    },
-
-    _currentImage : function(){
-        return this.images[this.currentFrame];
     },
 
     moveTo : function(){

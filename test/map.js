@@ -142,7 +142,6 @@ var Map = Class.create({
 
     tileValue : function(gridX, gridY, z) {
         if (this.values[gridY] && this.values[gridY][gridX]) {
-            console.log('[' + gridX + ',' + gridY + '] : ' + this.values[gridY][gridX][z]);
             return this.values[gridY][gridX][z];
         }
         return -111;

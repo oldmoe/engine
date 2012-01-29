@@ -5,8 +5,7 @@ var MapDisplay = Class.create({
         var images = [];
         var im = new Image();
         im.src = 'map.png';
-        images[0] = im;
-        layers['map'].createSprite('', owner, images, {}).show();
+        layers['map'].createSprite('', owner, im, {frameWidth: 896, frameHeight: 536}).show();
     }
 
 });

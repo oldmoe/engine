@@ -1,7 +1,7 @@
 NE.CanvasSprite = Class.create(NE.BasicSprite, {
 
-    initialize : function($super, layer, owner, images, properties) {
-        $super(layer, owner, images, properties);
+    initialize : function($super, layer, owner, image, properties) {
+        $super(layer, owner, image, properties);
         this.layer.attach(this, ['render']);
     },
 
@@ -21,7 +21,14 @@ NE.CanvasSprite = Class.create(NE.BasicSprite, {
         //ctx.translate(this.owner.x + this.shiftX, this.owner.y + this.shiftY);
         if (this.owner.theta && this.owner.theta != 0)
             ctx.rotate(this.owner.theta);
-        ctx.drawImage(this._currentImage(), this.owner.x + this.shiftX, this.owner.y + this.shiftY);
+        var srcX = this.currentAnimation * this.frameWidth;
+        var srcY = this.currentFrame * this.frameHeight;
+        if (srcY >= this.image.height) {
+            srcY = 0;
+            this.currentFrame = 0;
+        }
+        ctx.drawImage(this.image, srcX, srcY, this.frameWidth, this.frameHeight, this.owner.x + this.shiftX, this.owner.y + this.shiftY, this.frameWidth, this.frameHeight);
+        this.currentFrame++;
     },
 
 });
