@@ -4,10 +4,9 @@ var CreepDisplay = Class.create({
 
     initialize : function(owner, layers) {
         this.owner = owner;
-        this.owner.attach(this, ['update']);
         var im = new Image();
         im.src = 'tank1.png';
-        this.sprite = layers['creeps'].createSprite('', owner, im, {shiftX: -32, shiftY: -45, frameWidth: 64, frameHeight: 64});
+        this.sprite = layers['creeps'].createSprite('', owner, im, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64});
         this.update();
     },
 
