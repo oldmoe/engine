@@ -16,8 +16,13 @@ var Tower = Class.create(NE.Publisher, {
 							{maxHp: 1300, power:22, price: 8,range: 3},
 							{maxHp: 1600, power:26, rate: 0.3, price: 21,range: 4}],
   initialize : function(scene){
-    this.x = 10;
-    this.y = 10;
+    this.x = 0;
+    this.y = 0;
+  },
+
+  moveTo : function(x, y){
+    this.x = x; 
+    this.y = y;
   },
 
   update : function(){

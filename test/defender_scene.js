@@ -20,6 +20,12 @@ var DefenderScene = Class.create(NE.Scene, {
         this.addObject(new Creep(this));
     },
 
+    sendTower : function() {
+        var tower = new Tower(this)
+        this.addObject(tower);
+        return tower;
+    },
+
     setupMap : function() {
         this.map = new Map(mapTestData);
         return this.map;
