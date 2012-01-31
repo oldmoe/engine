@@ -122,7 +122,11 @@ var Map = Class.create({
     getGridYCorrection : function(x, y) {
         x = Math.round(x/4) * 4;
         y = Math.round(y/4) * 4;
-        return this.gridYCorrections[x][y];
+        if (this.gridYCorrections[x]) {
+            return this.gridYCorrections[x][y];
+        } else {
+            return null;
+        }
     },
 
     findTile : function(x, y) {
@@ -131,6 +135,8 @@ var Map = Class.create({
         remX = x % this.tileW;
         remY = y % this.tileH;
         var correction = this.getGridYCorrection(remX, remY);
+        if (correction == null)
+            return null;
         gridY = gridY*2 + correction;
         if (gridY % 2 == 0) {
             gridX = Math.floor((x/this.tileW) + 0.5);

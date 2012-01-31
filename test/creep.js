@@ -2,7 +2,7 @@ var Creep = Class.create(NE.Publisher, {
 
     klassName: 'Creep',
     parent : "creep",
-    cannonTheta : 0,
+    cannonRotation : 0,
     olderTheta : 0,
     oldestTheta: 0,
     hp : 100,
@@ -25,6 +25,12 @@ var Creep = Class.create(NE.Publisher, {
         150: {1: [90,30], 2: [180,210]},
         210: {1: [180,150], 2: [270,330]},
         330: {1: [270,210], 2: [0,30]}},
+    orientations: {
+        30: {0: 'SE', 1: 'NE', 2: 'SW'},
+        150: {0: 'SW', 1: 'SE', 2: 'NW'},
+        210: {0: 'NW', 1: 'SW', 2: 'NE'},
+        330: {0: 'NE', 1: 'NW', 2: 'SE'}
+    },
     chosenDir : null,
 
     initialize : function(scene){
@@ -34,23 +40,13 @@ var Creep = Class.create(NE.Publisher, {
         this.gridY = this.entry.y;
         this.rotation = this.entry.theta;
         var bounds = this.map.locateTileBounds(this.entry.x, this.entry.y);
-        this.placeOnEdge(bounds);
+        this.placeOnEdge(bounds, this.rotation);
+        this.dx = this.map.cos30 * this.speed;
+        this.dy = this.map.sin30 * this.speed;
     },
 
-    placeOnEdge : function(bounds) {
-        if (this.rotation == 30) {
-            this.x = bounds.SE.x;
-            this.y = bounds.SE.y;
-        } else if (this.rotation == 150) {
-            this.x = bounds.SW.x;
-            this.y = bounds.SW.y;
-        } else if (this.rotation == 210) {
-            this.x = bounds.NW.x;
-            this.y = bounds.NW.y;
-        } else if (this.rotation == 330) {
-            this.x = bounds.NE.x;
-            this.y = bounds.NE.y;
-        }
+    placeOnEdge : function(bounds, rotation) {
+        this.moveTo(bounds[this.orientations[rotation][0]].x, bounds[this.orientations[rotation][0]].y);
     },
 
     /*
@@ -60,24 +56,10 @@ var Creep = Class.create(NE.Publisher, {
     validNeighbors : function() {
         var currentValue = this.map.tileValue(this.gridX, this.gridY, this.entry.z);
         var neighbors = (this.gridY % 2 == 0) ? (this.map.neighborsEven) : (this.map.neighborsOdd);
-        var ret = [], forward = null, left = null, right = null;
-        if (this.rotation == 30) {
-            forward = neighbors.SE.clone();
-            left = neighbors.NE.clone();
-            right = neighbors.SW.clone();
-        } else if (this.rotation == 150) {
-            forward = neighbors.SW.clone();
-            left = neighbors.SE.clone();
-            right = neighbors.NW.clone();
-        } else if (this.rotation == 210) {
-            forward = neighbors.NW.clone();
-            left = neighbors.SW.clone();
-            right = neighbors.NE.clone();
-        } else if (this.rotation == 330) {
-            forward = neighbors.NE.clone();
-            left = neighbors.NW.clone();
-            right = neighbors.SE.clone();
-        }
+        var ret = [];
+        var forward = neighbors[this.orientations[this.rotation][0]].clone();
+        var left = neighbors[this.orientations[this.rotation][1]].clone();
+        var right = neighbors[this.orientations[this.rotation][2]].clone();
         // if a neighbor/adjacent tile has the same value as my current tile
         // (i.e. not necessarily '1') then it's safe to move in that tile's direction
         if (forward != null && this.map.tileValue(this.gridX + forward[1], this.gridY + forward[0], this.entry.z) == currentValue) ret.push(this.moves.FORWARD);
@@ -87,8 +69,9 @@ var Creep = Class.create(NE.Publisher, {
     },
 
     update : function() {
-        if (this.dead) return
-        var move = false
+        if (this.dead)
+            return false;
+        var move = false;
         if (!this.rotating) {
             // chosenDir is a randomly-selected direction the creep will take when it
             // faces a crossroads. Once decided, it will be remembered until 1 whole
@@ -107,39 +90,36 @@ var Creep = Class.create(NE.Publisher, {
                 this.rotating = true;
                 this.oldRotation = this.rotation;
                 this.rotation = this.transitionAngles[this.oldRotation][this.chosenDir][0];
-                this.placeOnEdge(this.map.locateTileBounds(this.oldGridX, this.oldGridY));
+                this.placeOnEdge(this.map.locateTileBounds(this.oldGridX, this.oldGridY), this.oldRotation);
             } else {
                 // nowhere to go: probably reached the end of arena
                 move = true;
             }
         } else {
             if (this.rotation == 0) {
-                this.x += this.speed;
+                this.moveBy(this.speed, 0);
             } else if (this.rotation == 90) {
-                this.y += this.speed;
+                this.moveBy(0, this.speed);
             } else if (this.rotation == 180) {
                 this.x -= this.speed;
+                this.moveBy(-this.speed, 0);
             } else if (this.rotation == 270) {
-                this.y -= this.speed;
+                this.moveBy(0, -this.speed);
             }
         }
         if (move) {
             if (this.rotation == 30) {
-                this.x += this.map.cos30 * this.speed;
-                this.y += this.map.sin30 * this.speed;
+                this.moveBy(this.dx, this.dy);
             } else if (this.rotation == 150) {
-                this.x -= this.map.cos30 * this.speed;
-                this.y += this.map.sin30 * this.speed;
+                this.moveBy(-this.dx, this.dy);
             } else if (this.rotation == 210) {
-                this.x -= this.map.cos30 * this.speed;
-                this.y -= this.map.sin30 * this.speed;
+                this.moveBy(-this.dx, -this.dy);
             } else if (this.rotation == 330) {
-                this.x += this.map.cos30 * this.speed;
-                this.y -= this.map.sin30 * this.speed;
+                this.moveBy(this.dx, -this.dy);
             }
         }
         var newTile = this.map.findTile(this.x, this.y);
-        if (newTile[0] >= this.map.width || newTile[1] >= this.map.height || newTile[0] < 0 || newTile[1] < 0 ) {
+        if (newTile == null) {
             this.destroy();
         } else if (this.gridX != newTile[0] || this.gridY != newTile[1]) {
             var oldArr = this.map.grid[this.gridY][this.gridX][this.entry.z];
@@ -152,7 +132,7 @@ var Creep = Class.create(NE.Publisher, {
                 // end of rotation
                 this.rotating = false;
                 this.rotation = this.transitionAngles[this.oldRotation][this.chosenDir][1];
-                this.placeOnEdge(this.map.locateTileBounds(this.oldGridX, this.oldGridY));
+                this.placeOnEdge(this.map.locateTileBounds(this.oldGridX, this.oldGridY), this.rotation);
             }
             // now we need to nullify chosenDir to make sure it's re-calculated in the next tile
             this.chosenDir = null;
@@ -163,6 +143,16 @@ var Creep = Class.create(NE.Publisher, {
             }
         }
         //this.target();	//for specifying the target to hit
+    },
+
+    moveTo : function(x, y) {
+        this.x = x;
+        this.y = y;
+    },
+
+    moveBy : function(dx, dy) {
+        this.x += dx;
+        this.y += dy;
     },
     
     getTargetfromCell : function(cell, targets){
@@ -180,7 +170,6 @@ var Creep = Class.create(NE.Publisher, {
         var dx = this.x - target.x
         var dy = this.y - target.y
         var theta = Math.atan(dy/dx) *  180 / Math.PI
-
         if(dx < 0){
             this.cannonTheta =  theta - this.rotation
         }else{
@@ -207,8 +196,8 @@ var Creep = Class.create(NE.Publisher, {
     },
 
     destroy : function(){
-        var cell = Map.grid[this.gridX][this.gridY];
-        cell.splice(cell.indexOf(this), 1);
+        /*var cell = Map.grid[this.gridX][this.gridY];
+        cell.splice(cell.indexOf(this), 1);*/
         this.dead = true
     }
 

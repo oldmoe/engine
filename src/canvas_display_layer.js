@@ -25,6 +25,7 @@ NE.CanvasDisplayLayer = Class.create(NE.DisplayLayer, {
 
     createSprite : function(type, owner, images, properties) {
         var sprite = new NE.CanvasSprite(this, owner, images, properties);
+        sprite.name = type;
         return sprite;
     },
 
@@ -33,4 +34,5 @@ NE.CanvasDisplayLayer = Class.create(NE.DisplayLayer, {
             this.ctx.clearRect(0, 0, this.width, this.height);
         }
     }
+
 });

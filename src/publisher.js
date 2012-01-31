@@ -29,7 +29,7 @@ NE.Publisher = {
 	
     unsubscribe : function(event, subscriber){
         this.subscriptions[event] = this.subscriptions[event].reject(function(element){
-            return relement[0] == subscriber
+            return element[0] == subscriber
             })
         return this;
     },

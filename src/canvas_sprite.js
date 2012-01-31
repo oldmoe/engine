@@ -17,8 +17,8 @@ NE.CanvasSprite = Class.create(NE.BasicSprite, {
         if (!this.visible) 
             return;
         var ctx = layer.ctx
-        //ctx.save();
-        //ctx.translate(this.owner.x + this.shiftX, this.owner.y + this.shiftY);
+        ctx.save();
+        ctx.translate(this.owner.x, this.owner.y);
         if (this.owner.theta && this.owner.theta != 0)
             ctx.rotate(this.owner.theta);
         var srcX = this.currentAnimation * this.frameWidth;
@@ -27,8 +27,13 @@ NE.CanvasSprite = Class.create(NE.BasicSprite, {
             srcY = 0;
             this.currentFrame = 0;
         }
-        ctx.drawImage(this.image, srcX, srcY, this.frameWidth, this.frameHeight, this.owner.x + this.shiftX, this.owner.y + this.shiftY, this.frameWidth, this.frameHeight);
+        ctx.drawImage(this.image, srcX, srcY, this.frameWidth, this.frameHeight, this.shiftX, this.shiftY, this.frameWidth, this.frameHeight);
+        ctx.restore();
         this.currentFrame++;
     },
+
+    destroy : function() {
+        this.layer.detach(this, ['render']);
+    }
 
 });
