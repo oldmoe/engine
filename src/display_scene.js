@@ -14,7 +14,8 @@ NE.DisplayScene = Class.create({
 
     addObject : function(scene, object) {
         var klass = eval(object.klassName + 'Display');
-        new klass(object, this.layers);
+        var objectDisplay = new klass(object, this.layers);
+        object.attach(objectDisplay, ['update']);
     }
     
 });
