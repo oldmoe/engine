@@ -90,7 +90,6 @@ var Creep = Class.create(NE.Publisher, {
                 this.rotating = true;
                 this.oldRotation = this.rotation;
                 this.rotation = this.transitionAngles[this.oldRotation][this.chosenDir][0];
-                this.placeOnEdge(this.map.locateTileBounds(this.oldGridX, this.oldGridY), this.oldRotation);
             } else {
                 // nowhere to go: probably reached the end of arena
                 move = true;

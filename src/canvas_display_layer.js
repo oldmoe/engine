@@ -34,5 +34,4 @@ NE.CanvasDisplayLayer = Class.create(NE.DisplayLayer, {
             this.ctx.clearRect(0, 0, this.width, this.height);
         }
     }
-
 });

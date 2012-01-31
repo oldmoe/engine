@@ -9,14 +9,16 @@ NE.DOMDisplayLayer = Class.create(NE.DisplayLayer, {
             if(options.zIndex)
                 div.style.zIndex = options.zIndex;
             if(options.id)
-                div.id = id;
+                div.setAttribute('id', options.id);
         }
         this.container = $(container.appendChild(div))
+        this.div = div;
         return this;
     },
 
     createSprite : function(type, owner, images, properties) {
         var sprite = new NE.DOMSprite(this, owner, images, properties);
+        return sprite;
     }
 
 

@@ -13,6 +13,7 @@
         <script src="../src/reactor.js" type="text/javascript"></script>
         <script src="../src/display_layer.js" type="text/javascript"></script>
         <script src="../src/canvas_display_layer.js" type="text/javascript"></script>
+        <script src="../src/dom_display_layer.js" type="text/javascript"></script>
         <script src="../src/basic_sprite.js" type="text/javascript"></script>
         <script src="../src/dom_sprite.js" type="text/javascript"></script>
         <script src="../src/canvas_sprite.js" type="text/javascript"></script>
@@ -23,15 +24,20 @@
         <script src="map_display.js" type="text/javascript"></script>
         <script src="creep.js" type="text/javascript"></script>
         <script src="creep_display.js" type="text/javascript"></script>
+        <script src="tower.js" type="text/javascript"></script>
+        <script src="tower_display.js" type="text/javascript"></script>
+        <script src="control.js" type="text/javascript"></script>
+        <script src="user.js" type="text/javascript"></script>
+        <script src="game_data.js" type="text/javascript"></script>
         <link rel="stylesheet" type="text/css" href="defender.css"/>
     </head>
     <body id="body">
     <script>
-        var game = {}, scene = null;
+        var game = {}, scene = null, sceneDisplay= null;
         document.observe('dom:loaded',function(){
             try {
                 scene = new DefenderScene(50, game);
-                var sceneDisplay = new DefenderDisplay(scene);
+                sceneDisplay = new DefenderDisplay(scene);
                 scene.start();
             } catch(e){
                 console.log("error");
