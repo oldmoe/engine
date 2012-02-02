@@ -12,7 +12,7 @@ var TowerDisplay = Class.create(Unit, {
                     frameHeight: this.frameHeight, frameWidth: this.frameWidth});
         im = new Image();
         im.src = 'images/belcher_cannon.png';
-        this.cannonSprite = layers['units'].createSprite('canon', owner, im, {shiftX: 0, shiftY: -32, rotationAttrib: 'cannonTheta',
+        this.cannonSprite = layers['units'].createSprite('canon', owner, im, {shiftX: 0, shiftY: -32, rotationAttrib: 'cannonRotation',
                     frameHeight: this.frameHeight, frameWidth: this.frameWidth});
         this.meterSprite = layers['controls'].createSprite('MeterBarSprite', owner, im, 
                  {shiftX: 0, shiftY: -this.frameHeight, className: 'meterBar', meter : 'hp', maxMeterVal : this.owner.maxHp});
@@ -20,7 +20,6 @@ var TowerDisplay = Class.create(Unit, {
     }, 
 
     update : function(){
-      this.cannonSprite.currentFrame = this.cannonSprite.rotationAnimations[this.owner.cannonRotation];
     },
 
     destroy : function() {

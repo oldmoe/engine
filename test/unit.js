@@ -44,7 +44,6 @@ var Unit = Class.create(NE.Publisher, {
         if (!this.movingFactors[this.cannonRotation] && this.movingFactors[this.cannonRotation] != 0) {
             this.cannonRotation += (this.cannonRotation > theta) ? (30) : (-30);
         }
-        console.log(this.cannonRotation);
         this.currentTarget.affect(this.effectivePower());
     },
 
