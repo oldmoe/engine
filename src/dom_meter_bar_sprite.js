@@ -61,7 +61,8 @@ NE.DOMMeterBarSprite = Class.create(NE.BasicSprite, {
     },
 
     destroy : function(owner){
-
+        this.owner.detach(this, this.attachedMethods);
+        this.div.remove();   
     }
 
 });

@@ -5,16 +5,14 @@ var DefenderDisplay = Class.create(NE.DisplayScene, {
         var im = new Image();
         im.src = 'map.png';
         this.layers['map'] = new NE.CanvasDisplayLayer('body', 896, 536, {id: 'map'});
-        this.layers['creeps'] = new NE.CanvasDisplayLayer('body', 896, 536, {id: 'creepsArena'});
-        this.layers['towers'] = new NE.CanvasDisplayLayer('body', 896, 536, {id: 'towersArena'});
+        this.layers['units'] = new NE.CanvasDisplayLayer('body', 896, 536, {id: 'unitsArena'});
         this.layers['controls'] = new NE.DOMDisplayLayer('body', {id: 'controlsArena'});
         this.control = new Control(this.scene, this.layers);
         scene.attach(this, ['setupMap']);
     },
 
     update : function() {
-        this.layers['creeps'].render();
-        this.layers['towers'].render();
+        this.layers['units'].render();
     },
 
     setupMap : function(scene, map) {

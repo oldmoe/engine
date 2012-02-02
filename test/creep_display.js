@@ -1,5 +1,6 @@
 var CreepDisplay = Class.create({
 
+    frameHeight : 64,
     initialize : function(owner, layers) {
         this.owner = owner;
         this.owner.attach(this, ['update','destroy']);
@@ -7,8 +8,10 @@ var CreepDisplay = Class.create({
         var cannon = new Image();
         base.src = 'tank1_base.png';
         cannon.src = 'tank1_canon.png';
-        this.baseSprite = layers['creeps'].createSprite('base', owner, base, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64});
-        this.cannonSprite = layers['creeps'].createSprite('canon', owner, cannon, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64, rotationAttrib: 'cannonRotation'});
+        this.baseSprite = layers['units'].createSprite('base', owner, base, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64});
+        this.cannonSprite = layers['units'].createSprite('canon', owner, cannon, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64, rotationAttrib: 'cannonRotation'});
+        this.meterSprite = layers['controls'].createSprite('MeterBarSprite', owner, null,
+                 {shiftX: -30, shiftY: -this.frameHeight, className: 'meterBar', meter : 'hp', maxMeterVal : 100});
         this.update();
     },
 
