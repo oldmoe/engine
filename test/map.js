@@ -30,6 +30,8 @@ var Map = Class.create({
         SE: [1,1],
         SW: [1,0]
     },
+    rangeCycle : ['SE', 'SW', 'NW', 'NE'],
+    neighbors : [],
 
     initialize : function(data) {
         // build lookup table for gridY corrections
@@ -51,6 +53,8 @@ var Map = Class.create({
         }
         this.x = 0;
         this.y = 0;
+        this.neighbors[0] = this.neighborsEven;
+        this.neighbors[1] = this.neighborsOdd;
     },
 
     buildGridYCorrectionsTable : function() {
@@ -151,6 +155,35 @@ var Map = Class.create({
             return this.values[gridY][gridX][z];
         }
         return -111;
+    },
+
+    /* iterates all tiles in give range in a clock-wise cycle going outward.
+     * starts at the North tile, then going SE -> SW -> NW -> NE back to N
+     * */
+    neighborUnits : function(gridX, gridY, range, layers) {
+        var origin = [gridY, gridX];
+        var currentY = Math.abs(origin[0]);
+        var current = origin.clone();
+        var units = [], nextDir = null;
+        for (var r = 1; r <= range; ++r) {
+            var tiles = r * 8;
+            current[0] += this.neighbors[currentY % 2].N[0];
+            current[1] += this.neighbors[currentY % 2].N[1];
+            for (var t = 0; t < tiles; ++t) {
+                currentY = Math.abs(current[0]);
+                nextDir = this.rangeCycle[Math.floor(t/(r*2))];
+                if (this.neighbors[currentY % 2]) {
+                    current[0] += this.neighbors[currentY % 2][nextDir][0];
+                    current[1] += this.neighbors[currentY % 2][nextDir][1];
+                    for (var z = 0; z < layers.length; ++z) {
+                        if (this.grid[current[0]] && this.grid[current[0]][current[1]] && this.grid[current[0]][current[1]][layers[z]].length > 0)
+                            units = units.concat(this.grid[current[0]][current[1]][layers[z]]);
+                    }
+                }
+            }
+            currentY = Math.abs(current[0]);
+        }
+        return units;
     }
     
 });

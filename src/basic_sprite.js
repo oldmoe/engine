@@ -11,10 +11,14 @@ NE.BasicSprite = Class.create(NE.Publisher, {
         this.image = image;
         this.layer = layer;
         this.owner = owner;
-        Object.extend(this, properties);
         this.currentAnimation = 0;
         this.currentFrame = 0;
         this.visible = true;
+        this.rotationAttrib = 'rotation';
+        this.thetaAttrib = 'theta';
+        this.xAttrib = 'x';
+        this.yAttrib = 'y';
+        Object.extend(this, properties);
     },
 
     moveTo : function(){

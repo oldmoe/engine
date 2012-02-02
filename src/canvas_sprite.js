@@ -22,13 +22,13 @@ NE.CanvasSprite = Class.create(NE.BasicSprite, {
             return;
         var ctx = layer.ctx
         ctx.save();
-        ctx.translate(this.owner.x, this.owner.y);
+        ctx.translate(this.owner[this.xAttrib], this.owner[this.yAttrib]);
         // used in case of isometric rotation
-        if (this.rotationAnimations[this.owner.rotation] || this.rotationAnimations[this.owner.rotation] == 0)
-            this.currentAnimation = this.rotationAnimations[this.owner.rotation];
+        if (this.rotationAnimations[this.owner[this.rotationAttrib]] || this.rotationAnimations[this.owner[this.rotationAttrib]] == 0)
+            this.currentAnimation = this.rotationAnimations[this.owner[this.rotationAttrib]];
         // in case of 'actual' canvas rotation
-        if (this.owner.theta && this.owner.theta != 0)
-            ctx.rotate(this.owner.theta);
+        if (this.owner[this.thetaAttrib] && this.owner[this.thetaAttrib] != 0)
+            ctx.rotate(this.owner[this.thetaAttrib]);
         var srcX = this.currentAnimation * this.frameWidth;
         var srcY = this.currentFrame * this.frameHeight;
         if (srcY >= this.image.height) {

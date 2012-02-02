@@ -9,9 +9,11 @@ var DefenderScene = Class.create(NE.Scene, {
         this.loadData();
     },
 
-    _start : function(){
+    _start : function() {
         this.setupMap();
-        this.fireEvery(10, this, 'sendCreep');
+        this.fireEvery(25, this, 'sendCreep');
+        //this.sendCreep();
+        //this.fireAfter(17, this, 'sendCreep');
         this.user = new User(this.gameData.data);
         /* Create User Towers */  
     },
