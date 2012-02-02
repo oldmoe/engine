@@ -14,7 +14,7 @@ var Creep = Class.create(Unit, {
     rate : 0.1,
     power: 10,
     cannonDisplacement : [-4, 0],
-    range : 3,
+    range : 2,
     moves : {
         FORWARD : 0,
         LEFT : 1,

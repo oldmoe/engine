@@ -11,7 +11,7 @@ var DefenderScene = Class.create(NE.Scene, {
 
     _start : function() {
         this.setupMap();
-        this.fireEvery(25, this, 'sendCreep');
+        this.fireEvery(50, this, 'sendCreep');
         //this.sendCreep();
         //this.fireAfter(17, this, 'sendCreep');
         this.user = new User(this.gameData.data);

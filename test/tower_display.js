@@ -20,7 +20,7 @@ var TowerDisplay = Class.create(Unit, {
         this.cannonSprite = layers['units'].createSprite('canon', owner, im, {
             shiftX: -31,
             shiftY: -50,
-            rotationAttrib: 'cannonTheta',
+            rotationAttrib: 'cannonRotation',
             frameHeight: this.frameHeight,
             frameWidth: this.frameWidth
         });
@@ -36,7 +36,6 @@ var TowerDisplay = Class.create(Unit, {
     }, 
 
     update : function(){
-        this.cannonSprite.currentFrame = this.cannonSprite.rotationAnimations[this.owner.cannonRotation];
         if (this.owner.currentTarget)
             this.highlightTile(this.owner.currentTarget.gridX, this.owner.currentTarget.gridY, 1);
     },
