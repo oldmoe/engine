@@ -10,11 +10,11 @@ var Control = Class.create(NE.Publisher, {
     this.sprites = [];
     var im = new Image();
     im.src = 'images/build.png';
-    this.sprites.push(this.layer.createSprite('', this, [im], {shiftX: 0, shiftY: 0}).hide());
+    this.sprites.push(this.layer.createSprite('Sprite', this, [im], {shiftX: 0, shiftY: 0}).hide());
     ['belcher', 'exploder', 'patriot', 'reaper'].each(function(tower, towerIndex){
       im = new Image();
       im.src = 'images/'+tower+'.png';
-      var sprite = self.layer.createSprite('', self, [im],
+      var sprite = self.layer.createSprite('Sprite', self, [im],
            {shiftX: 20 + 80*(towerIndex%2), shiftY: 35 + 40*2*(Math.floor(towerIndex/2))}).hide();
       sprite.div.observe('click', function(e){
         var tower = self.scene.sendTower();

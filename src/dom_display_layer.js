@@ -17,7 +17,7 @@ NE.DOMDisplayLayer = Class.create(NE.DisplayLayer, {
     },
 
     createSprite : function(type, owner, images, properties) {
-        var sprite = new NE.DOMSprite(this, owner, images, properties);
+        var sprite = new (eval('NE.DOM' + type))(this, owner, images, properties);
         return sprite;
     }
 
