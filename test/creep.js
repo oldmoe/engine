@@ -14,7 +14,7 @@ var Creep = Class.create(Unit, {
     rate : 0.1,
     power: 10,
     cannonDisplacement : [-4, 0],
-    range : 2,
+    range : 3,
     moves : {
         FORWARD : 0,
         LEFT : 1,
@@ -187,11 +187,10 @@ var Creep = Class.create(Unit, {
         this.dead = true;
     },
 
-    hitTarget : function() {
-        this.hit = true;
-        this.currentTarget.hp -= 2;
-        if (this.currentTarget.hp <= 0)
-            this.currentTarget.destroy();
+    target : function($super) {
+        $super();
+        if (this.currentTarget == null)
+            this.cannonRotation = this.rotation;
     }
 
 });

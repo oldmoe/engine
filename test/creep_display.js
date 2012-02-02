@@ -8,8 +8,8 @@ var CreepDisplay = Class.create({
         var cannon = new Image();
         base.src = 'tank1_base.png';
         cannon.src = 'tank1_canon.png';
-        this.baseSprite = layers['creeps'].createSprite('base', owner, base, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64});
-        this.cannonSprite = layers['creeps'].createSprite('canon', owner, cannon, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64, rotationAttrib: 'cannonRotation'});
+        this.baseSprite = layers['units'].createSprite('base', owner, base, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64});
+        this.cannonSprite = layers['units'].createSprite('canon', owner, cannon, {shiftX: -32, shiftY: -47, frameWidth: 64, frameHeight: 64, rotationAttrib: 'cannonRotation'});
         this.meterSprite = layers['controls'].createSprite('MeterBarSprite', owner, null,
                  {shiftX: -20, shiftY: -40, className: 'meterBar', meter : 'hp', maxMeterVal : this.owner.maxHp});
         this.meterSprite.show();
@@ -17,7 +17,7 @@ var CreepDisplay = Class.create({
     },
 
     update : function() {
-        if (this.owner.hit)
+        if (this.owner.currentTarget)
             this.highlightTile(this.owner.currentTarget.gridX, this.owner.currentTarget.gridY, 1);
     },
 
