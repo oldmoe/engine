@@ -1,4 +1,4 @@
-var Creep = Class.create(NE.Publisher, {
+var Creep = Class.create(Unit, {
 
     klassName: 'Creep',
     parent : "creep",
@@ -12,7 +12,7 @@ var Creep = Class.create(NE.Publisher, {
     evading : false,
     direction : 0,
     rate : 0.1,
-    power: 1.0,
+    power: 10,
     cannonDisplacement : [-4, 0],
     range : 2,
     moves : {
@@ -60,16 +60,7 @@ var Creep = Class.create(NE.Publisher, {
             2: 'SE'
         }
     },
-    movingFactors : {
-        0: [1,0],
-        30: [1,1],
-        90: [0,1],
-        150: [-1,1],
-        180: [-1,0],
-        210: [-1,-1],
-        270: [0,-1],
-        330: [1,-1]
-    },
+
     chosenDir : null,
 
     initialize : function(scene){
@@ -173,50 +164,21 @@ var Creep = Class.create(NE.Publisher, {
         this.y = y;
     },
 
+    targetLayers : function(){
+        return [0];
+    },
+
+    targetTypes : function(){
+        return ['Tower'];
+    },
+
+    effectivePower : function(){ 
+        return this.power;
+    },
+
     moveBy : function(dx, dy) {
         this.x += dx;
         this.y += dy;
-    },
-
-    target : function() {
-        this.currentTarget = null;
-        var units = this.map.neighborUnits(this.gridX, this.gridY, this.range, ['1','2']);
-        var targets = [];
-        for (var i = 0, len = units.length; i < len; ++i) {
-            if (units[i].klassName && units[i].klassName == 'Creep')
-                targets.push(units[i]);
-        }
-        this.hit = false;
-        if (targets.length > 0) {
-            this.currentTarget = this.pickTarget(targets);
-            this.aim();
-            this.hitTarget();
-        } else {
-            this.cannonRotation = this.rotation;
-        }
-    },
-
-    aim : function() {
-        var dx = this.x - this.currentTarget.x;
-        var dy = this.y - this.currentTarget.y;
-        var theta = Math.atan(dy/dx) * 180 / Math.PI;
-        this.cannonRotation = Math.round(theta/30) * 30;
-        if (dx > 0) {
-            this.cannonRotation += 180;
-        }
-        if (this.cannonRotation < 0) {
-            this.cannonRotation += 360;
-        }
-        if (!this.movingFactors[this.cannonRotation] && this.movingFactors[this.cannonRotation] != 0) {
-            this.cannonRotation += (this.cannonRotation > theta) ? (30) : (-30);
-        }
-    },
-
-    pickTarget : function(targets) {
-        if (targets[0])
-            return targets[0];
-        else
-            return null;
     },
 
     destroy : function(){

@@ -4,13 +4,7 @@
     top: 0px;
 }
 
-#creepsArena {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-}
-
-#towersArena {
+#unitsArena {
     position: absolute;
     left: 0px;
     top: 0px;

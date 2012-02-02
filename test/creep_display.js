@@ -1,5 +1,6 @@
 var CreepDisplay = Class.create({
 
+    frameHeight : 64,
     initialize : function(owner, layers) {
         this.owner = owner;
         this.owner.attach(this, ['update','destroy']);
