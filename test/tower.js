@@ -25,7 +25,6 @@ var Tower = Class.create(NE.Publisher, {
     this.x = x; 
     this.y = y;
     this.neighbors = this.neighborTiles();
-    console.log(this.neighbors);
     this.pickTarget();
   },
 
