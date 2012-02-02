@@ -17,23 +17,31 @@ NE.DOMMeterBarSprite = Class.create(NE.BasicSprite, {
         this.div.appendChild(this.fullDiv);
         var self = this;
         [this.emptyDiv, this.fullDiv].each(function(div){
-          div.setStyle({position:'absolute', left:'0px', top:'0px', 
-              width : self.div.getWidth()+'px',
-              height : self.div.getHeight()+'px',
-              'border-radius': '5px' });
-          div.style.setProperty('-moz-border-radius','5px','');
+            div.setStyle({
+                position:'absolute',
+                left:'0px',
+                top:'0px',
+                width : self.div.getWidth()+'px',
+                height : self.div.getHeight()+'px',
+                'border-radius': '5px'
+            });
+            div.style.setProperty('-moz-border-radius','5px','');
         });
         this.width = self.div.getWidth();
         this.owner.attach(this, this.attachedMethods)
     },
 
     update : function(owner){
-      var newFullWidth = owner[this.meter] / this.maxMeterVal;
-      this.fullDiv.style.setProperty('width', this.width*newFullWidth +'px', '');
+        var newFullWidth = owner[this.meter] / this.maxMeterVal;
+        this.fullDiv.style.setProperty('width', this.width*newFullWidth +'px', '');
     },
 
     moveTo : function(owner){
-        this.div.setStyle({top : owner.y + this.shiftY + 'px', left: owner.x + this.shiftX + 'px', position : 'absolute'});
+        this.div.setStyle({
+            top : owner.y + this.shiftY + 'px',
+            left: owner.x + this.shiftX + 'px',
+            position : 'absolute'
+        });
         return this;
     },
 

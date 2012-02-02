@@ -92,7 +92,7 @@ var Creep = Class.create(NE.Publisher, {
     /*
 	returns an array of all possible moving directions (forward, left, right)
 	according to current rotation and neighboring tiles
-	*/
+     */
     validNeighbors : function() {
         var currentValue = this.map.tileValue(this.gridX, this.gridY, this.entry.z);
         var neighbors = this.map.neighbors[this.gridY % 2];
@@ -162,10 +162,9 @@ var Creep = Class.create(NE.Publisher, {
             if (this.gridX < this.map.width && this.gridY < this.map.height) {
                 this.map.grid[this.gridY][this.gridX][this.entry.z].push(this);
             } else {
-        // we are going out, do nothing for now;
+                // we are going out, do nothing for now;
+            }
         }
-        }
-        this.cannonRotation = this.rotation;
         this.target();
     },
 
@@ -187,10 +186,13 @@ var Creep = Class.create(NE.Publisher, {
             if (units[i].klassName && units[i].klassName == 'Creep')
                 targets.push(units[i]);
         }
-        this.currentTarget = this.pickTarget(targets);
-        if (this.currentTarget != null) {
+        this.hit = false;
+        if (targets.length > 0) {
+            this.currentTarget = this.pickTarget(targets);
             this.aim();
-            //this.hitTarget();
+            this.hitTarget();
+        } else {
+            this.cannonRotation = this.rotation;
         }
     },
 
@@ -210,7 +212,7 @@ var Creep = Class.create(NE.Publisher, {
         }
     },
 
-    pickTarget : function(targets){
+    pickTarget : function(targets) {
         if (targets[0])
             return targets[0];
         else
@@ -223,8 +225,11 @@ var Creep = Class.create(NE.Publisher, {
         this.dead = true;
     },
 
-    rotateCannonTo : function(deg) {
-        this.cannonRotation = deg;
+    hitTarget : function() {
+        this.hit = true;
+        this.currentTarget.hp -= 2;
+        if (this.currentTarget.hp <= 0)
+            this.currentTarget.destroy();
     }
 
 });

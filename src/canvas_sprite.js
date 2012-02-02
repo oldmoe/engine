@@ -31,7 +31,8 @@ NE.CanvasSprite = Class.create(NE.BasicSprite, {
             ctx.rotate(this.owner[this.thetaAttrib]);
         var srcX = this.currentAnimation * this.frameWidth;
         var srcY = this.currentFrame * this.frameHeight;
-        if (srcY >= this.image.height) {
+        // the -4 below is to provide some fault tolerance from designers
+        if (srcY >= (this.image.height-this.frameHeight-4)) {
             srcY = 0;
             this.currentFrame = 0;
         }

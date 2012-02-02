@@ -2,6 +2,7 @@ var TowerDisplay = Class.create({
 
     frameHeight : 64,
     frameWidth : 64,
+    
     initialize : function(owner, layers) {
         this.owner = owner;
         var images = [];
@@ -20,7 +21,7 @@ var TowerDisplay = Class.create({
     }, 
 
     update : function(){
-    } 
+    }
 
 });
 
